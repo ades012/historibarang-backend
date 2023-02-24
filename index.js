@@ -48,18 +48,18 @@ app.get('/api/histori', (req, res) => {
 });
 
 // GET USER DATA BY ID
-app.get('/api/kategori/:id', (req, res) => {
-    connection.query("id_transaksi, id_barang, type, date, nama, kuantitas FROM histori_barang WHERE id_transaksi = '"+req.params.id+"'", (error, results, fields) => { 
-      if (error) throw error;
-      res.status(200);
-      res.json(
-        { 
-            status: "OK",
-            data: results
-        }
-      )
-    });
-});
+// app.get('/api/histori:id', (req, res) => {
+//     connection.query("id_transaksi, id_barang, type, date, nama, kuantitas FROM histori_barang WHERE id_transaksi = '"+req.params.id+"'", (error, results, fields) => { 
+//       if (error) throw error;
+//       res.status(200);
+//       res.json(
+//         { 
+//             status: "OK",
+//             data: results
+//         }
+//       )
+//     });
+// });
 
 
 app.post("/api/histori", (req, res) => {
@@ -103,6 +103,18 @@ app.post("/api/histori", (req, res) => {
   }
 });
 
+app.get('/api/histori/:id', (req, res) => {
+  connection.query("select histori_barang.id_transaksi, data_barang.nama_barang, data_barang.foto_barang, histori_barang.type, histori_barang.date, histori_barang.nama, histori_barang.kuantitas from data_barang left join histori_barang on histori_barang.id_barang = data_barang.id_barang WHERE data_barang.id_barang = '"+req.params.id+"'", (error, results, fields) => { 
+    if (error) throw error;
+    res.status(200);
+    res.json(
+      { 
+          status: "OK",
+          data: results
+      }
+    )
+  });
+});
 
 
 app.listen(port, () => {
